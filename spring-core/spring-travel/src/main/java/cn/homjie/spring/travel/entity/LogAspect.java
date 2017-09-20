@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class LogAspect {
 
-	@Pointcut("execution(* cn.homjie.spring.travel.entity.TxManager.*(..))")
+	@Pointcut("target(cn.homjie.spring.travel.entity.TxManager)")
 	private void txManagerPointcut() {
 		// the pointcut signature
 	}
