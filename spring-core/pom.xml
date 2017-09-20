@@ -16,6 +16,7 @@
 		<module>spring-travel</module>
 		<module>spring-wiring</module>
 		<module>spring-wiring-advanced</module>
+		<module>spring-aspect</module>
 	</modules>
 
 </project>
