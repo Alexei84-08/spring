@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<spring.version>4.3.11.RELEASE</spring.version>
+		<aspectj.version>1.8.9</aspectj.version>
 	</properties>
 
 	<dependencyManagement>
@@ -24,6 +25,11 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
