@@ -14,6 +14,7 @@
 
 	<modules>
 		<module>spring-travel</module>
+		<module>spring-wiring</module>
 	</modules>
 
 </project>
