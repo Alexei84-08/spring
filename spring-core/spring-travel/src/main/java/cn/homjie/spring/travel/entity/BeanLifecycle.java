@@ -32,9 +32,9 @@ public class BeanLifecycle implements InitializingBean, DisposableBean {
 	}
 
 	@PreDestroy
-	public void afterInitiate() {
+	public void preDestroy() {
 		// @PreDestroy 等价于实现了 DisposableBean 接口
-		System.out.println("@PreDestroy DisposableBean after initiate");
+		System.out.println("@PreDestroy DisposableBean before destroy");
 	}
 
 	@Override

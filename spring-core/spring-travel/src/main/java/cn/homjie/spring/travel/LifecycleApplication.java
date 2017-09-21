@@ -14,7 +14,7 @@ public class LifecycleApplication {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(LifecycleApplication.class);
 		BeanLifecycle lifecycle = context.getBean(BeanLifecycle.class);
 		lifecycle.hello();
-		System.out.println("application shutdown");
+		System.out.println("[application shutdown]");
 		context.close();
 	}
 
