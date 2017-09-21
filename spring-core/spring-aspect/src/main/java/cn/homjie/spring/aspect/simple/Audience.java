@@ -1,11 +1,13 @@
-package cn.homjie.spring.aspect;
+package cn.homjie.spring.aspect.simple;
 
 import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
 
 /**
  * 观众
  */
 @Aspect
+@Component
 public class Audience {
 
 	// @Before 通知方法会在目标方法调用之前执行
@@ -14,8 +16,8 @@ public class Audience {
 	// @AfterThrowing 通知方法会在目标方法抛出异常后调用
 	// @Around 通知方法会将目标方法封装起来
 
-	@Pointcut("execution(* cn.homjie.spring.aspect.Performance.perform(..))")
-	private void perform() {
+	@Pointcut("execution(* cn.homjie.spring.aspect.entity.Performance.perform(..))")
+	public void perform() {
 		// 标记方法，定义切入点
 	}
 
