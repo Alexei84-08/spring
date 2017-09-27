@@ -10,6 +10,8 @@ public class HomeController {
 
 	// @Controller 声明为一个控制器
 
+	// 处理器方法上的 @RequestMapping 注解会对类级别上的 @RequestMapping 的声明进行补充
+
 	// 处理对 "/" 的 GET 请求
 	@RequestMapping(method = RequestMethod.GET)
 	public String home() {
