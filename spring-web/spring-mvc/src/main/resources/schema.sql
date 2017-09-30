@@ -1,16 +1,16 @@
-create table Spittle (
-	id identity,
-	message varchar(140) not null,
-	created_at timestamp not null,
-	latitude double,
-	longitude double
+CREATE TABLE Spittle (
+  id         IDENTITY,
+  message    VARCHAR(140) NOT NULL,
+  created_at TIMESTAMP    NOT NULL,
+  latitude   DOUBLE,
+  longitude  DOUBLE
 );
 
-create table Spitter (
-	id identity,
-	username varchar(20) unique not null,
-	password varchar(20) not null,
-	first_name varchar(30) not null,
-	last_name varchar(30) not null,
-	email varchar(30) not null
+CREATE TABLE Spitter (
+  id         IDENTITY,
+  username   VARCHAR(20) UNIQUE NOT NULL,
+  password   VARCHAR(20)        NOT NULL,
+  first_name VARCHAR(30)        NOT NULL,
+  last_name  VARCHAR(30)        NOT NULL,
+  email      VARCHAR(30)        NOT NULL
 );

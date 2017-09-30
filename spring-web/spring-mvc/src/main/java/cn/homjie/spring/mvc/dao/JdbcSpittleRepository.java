@@ -22,33 +22,33 @@ public class JdbcSpittleRepository implements SpittleRepository {
 
 	public List<Spittle> findRecentSpittles() {
 		return jdbc.query(
-				"select id, message, created_at, latitude, longitude" +
-						" from Spittle" +
-						" order by created_at desc limit 20",
+				"SELECT id, message, created_at, latitude, longitude" +
+						" FROM Spittle" +
+						" ORDER BY created_at DESC LIMIT 20",
 				new SpittleRowMapper());
 	}
 
 	public List<Spittle> findSpittles(long max, int count) {
 		return jdbc.query(
-				"select id, message, created_at, latitude, longitude" +
-						" from Spittle" +
-						" where id < ?" +
-						" order by created_at desc limit 20",
+				"SELECT id, message, created_at, latitude, longitude" +
+						" FROM Spittle" +
+						" WHERE id < ?" +
+						" ORDER BY created_at DESC LIMIT 20",
 				new SpittleRowMapper(), max);
 	}
 
 	public Spittle findOne(long id) {
 		return jdbc.queryForObject(
-				"select id, message, created_at, latitude, longitude" +
-						" from Spittle" +
-						" where id = ?",
+				"SELECT id, message, created_at, latitude, longitude" +
+						" FROM Spittle" +
+						" WHERE id = ?",
 				new SpittleRowMapper(), id);
 	}
 
 	public void save(Spittle spittle) {
 		jdbc.update(
-				"insert into Spittle (message, created_at, latitude, longitude)" +
-						" values (?, ?, ?, ?)",
+				"INSERT INTO Spittle (message, created_at, latitude, longitude)" +
+						" VALUES (?, ?, ?, ?)",
 				spittle.getMessage(),
 				spittle.getTime(),
 				spittle.getLatitude(),

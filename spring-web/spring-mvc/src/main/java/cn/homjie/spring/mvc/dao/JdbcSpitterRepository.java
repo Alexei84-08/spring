@@ -22,8 +22,8 @@ public class JdbcSpitterRepository implements SpitterRepository {
 
 	public Spitter save(Spitter spitter) {
 		jdbc.update(
-				"insert into Spitter (username, password, first_name, last_name, email)" +
-						" values (?, ?, ?, ?, ?)",
+				"INSERT INTO Spitter (username, password, first_name, last_name, email)" +
+						" VALUES (?, ?, ?, ?, ?)",
 				spitter.getUsername(),
 				spitter.getPassword(),
 				spitter.getFirstName(),
@@ -34,7 +34,7 @@ public class JdbcSpitterRepository implements SpitterRepository {
 
 	public Spitter findByUsername(String username) {
 		return jdbc.queryForObject(
-				"select id, username, null, first_name, last_name, email from Spitter where username=?",
+				"SELECT id, username, NULL, first_name, last_name, email FROM Spitter WHERE username=?",
 				new SpitterRowMapper(),
 				username);
 	}

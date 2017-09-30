@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -26,23 +27,32 @@ public class SpittleController {
 		this.spittleRepository = spittleRepository;
 	}
 
+	// 处理查询参数 Query Parameter
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Spittle> spittles(
 			@RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
 			@RequestParam(value = "count", defaultValue = "20") int count) {
+		// 请求中没有参数的话，会使用默认值将会设置
+		// 返回值会放到模型中，模型的 key 会根据其类型推断得出（也就是 spittleList）
 		return spittleRepository.findSpittles(max, count);
 	}
 
+	// 处理路径变量 Path Variable
 	@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
-	public String spittle(
-			@PathVariable("spittleId") long spittleId,
-			Model model) {
+	public String spittle(@PathVariable long spittleId, Model model) {
+		// 方法的参数名碰巧与占位符的名称相同，因此我们可以去掉 @PathVariable 中的 value 属性
+		// 模型的key将会是 spittle，这是根据传递到 addAttribute() 方法中的类型推断得到的
 		model.addAttribute(spittleRepository.findOne(spittleId));
 		return "spittle";
 	}
 
+	// 处理表单参数 Form Parameter
 	@RequestMapping(method = RequestMethod.POST)
-	public String saveSpittle(SpittleForm form, Model model) throws Exception {
+	public String saveSpittle(@Valid SpittleForm form, Model model) throws Exception {
+		// 使用 Spring 对 Java 校验 API（Java Validation API，又称 JSR-303）的支持。
+		// 从 Spring 3.0 开始，在 Spring MVC 中提供了对Java校验API的支持。
+		// 在 Spring MVC 中要使用 Java 校验 API 的话，并不需要什么额外的配置。
+		// 只要保证在类路径下包含这个 Java API 的实现即可，比如 Hibernate Validator。
 		spittleRepository.save(new Spittle(null, form.getMessage(), new Date(),
 				form.getLongitude(), form.getLatitude()));
 		return "redirect:/spittles";

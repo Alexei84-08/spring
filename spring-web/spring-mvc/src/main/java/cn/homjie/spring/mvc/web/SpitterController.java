@@ -31,14 +31,16 @@ public class SpitterController {
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(
-			@Valid Spitter spitter,
-			Errors errors) {
+	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+		// Spitter 参数添加了 @Valid 注解，这会告知 Spring，需要确保这个对象满足校验限制
+		// Errors 参数要紧跟在带有 @Valid 注解的参数后面
 		if (errors.hasErrors()) {
 			return "registerForm";
 		}
 
 		spitterRepository.save(spitter);
+		// redirect: 前缀将解析为重定向的规则，而不是视图的名称
+		// forward: 前缀将会前往（forward）指定的 URL 路径，而不再是重定向
 		return "redirect:/spitter/" + spitter.getUsername();
 	}
 
