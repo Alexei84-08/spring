@@ -50,7 +50,7 @@ public class SpittleController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String saveSpittle(@Valid SpittleForm form, Model model) throws Exception {
 		// 使用 Spring 对 Java 校验 API（Java Validation API，又称 JSR-303）的支持。
-		// 从 Spring 3.0 开始，在 Spring MVC 中提供了对Java校验API的支持。
+		// 从 Spring 3.0 开始，在 Spring MVC 中提供了对 Java 校验 API 的支持。
 		// 在 Spring MVC 中要使用 Java 校验 API 的话，并不需要什么额外的配置。
 		// 只要保证在类路径下包含这个 Java API 的实现即可，比如 Hibernate Validator。
 		spittleRepository.save(new Spittle(null, form.getMessage(), new Date(),
