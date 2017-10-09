@@ -8,6 +8,8 @@ public interface SpittleRepository {
 
 	List<Spittle> findRecentSpittles();
 
+	int countSpittles(long max);
+
 	List<Spittle> findSpittles(long max, int count);
 
 	Spittle findOne(long id);

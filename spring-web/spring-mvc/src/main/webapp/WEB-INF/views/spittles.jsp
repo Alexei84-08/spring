@@ -30,9 +30,9 @@
             </li>
         </c:forEach>
     </ul>
-    <c:if test="${fn:length(spittleList) gt 20}">
+    <c:if test="${fn:length(spittleList) lt total}">
         <hr/>
-        <s:url value="/spittles?count=${nextCount}" var="more_url"/>
+        <s:url value="/spittles?count=${count}" var="more_url"/>
         <a href="${more_url}">Show more</a>
     </c:if>
 </div>

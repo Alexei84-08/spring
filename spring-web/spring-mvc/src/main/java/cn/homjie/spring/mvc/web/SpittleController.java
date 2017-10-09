@@ -31,10 +31,16 @@ public class SpittleController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Spittle> spittles(
 			@RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
-			@RequestParam(value = "count", defaultValue = "20") int count) {
+			@RequestParam(value = "count", defaultValue = "0") int count,
+			@RequestParam(value = "nextCount", defaultValue = "5") int nextCount, Model model) {
+		int total = spittleRepository.countSpittles(max);
+		int nc = count + nextCount;
+		List<Spittle> spittles = spittleRepository.findSpittles(max, nc);
+		model.addAttribute("count", total > nc ? nc : total);
+		model.addAttribute("total", total);
 		// 请求中没有参数的话，会使用默认值将会设置
 		// 返回值会放到模型中，模型的 key 会根据其类型推断得出（也就是 spittleList）
-		return spittleRepository.findSpittles(max, count);
+		return spittles;
 	}
 
 	// 处理路径变量 Path Variable

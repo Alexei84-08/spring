@@ -24,7 +24,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
-		// 会查找 JSP 文件，在查找的时候，它会在视图名称上加一个特定的前缀和后缀
+		// 会查找 JSP 文件，在查找的时候，它会在视图名称上加一个特定的前缀和后缀，从而确定来渲染模型的 JSP 文件的物理位置
 		return resolver;
 	}
 
