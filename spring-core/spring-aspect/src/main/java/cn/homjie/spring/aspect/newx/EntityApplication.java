@@ -9,7 +9,7 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 @ComponentScan
 @Configuration
 @EnableSpringConfigured
-@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+@EnableLoadTimeWeaving
 public class EntityApplication {
 
 	public static void main(String[] args) {
