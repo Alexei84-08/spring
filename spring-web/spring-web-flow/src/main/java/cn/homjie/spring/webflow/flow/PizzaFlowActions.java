@@ -18,8 +18,7 @@ public class PizzaFlowActions {
 	@Autowired
 	CustomerService customerService;
 
-	public Customer lookupCustomer(String phoneNumber)
-			throws CustomerNotFoundException {
+	public Customer lookupCustomer(String phoneNumber) throws CustomerNotFoundException {
 		Customer customer = customerService.lookupCustomer(phoneNumber);
 		if (customer != null) {
 			return customer;
