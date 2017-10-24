@@ -7,7 +7,7 @@
 	</Appenders>
 	<Loggers>
 		<!-- Application Loggers -->
-		<Logger name="cn.homjie.spring.view" level="info">
+		<Logger name="cn.homjie.spring.security" level="info">
 			<AppenderRef ref="Console"/>
 		</Logger>
 

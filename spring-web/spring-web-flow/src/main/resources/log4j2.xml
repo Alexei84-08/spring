@@ -7,7 +7,7 @@
 	</Appenders>
 	<Loggers>
 		<!-- Application Loggers -->
-		<Logger name="cn.homjie.spring.mvc" level="info">
+		<Logger name="cn.homjie.spring.webflow" level="info">
 			<AppenderRef ref="Console"/>
 		</Logger>
 
