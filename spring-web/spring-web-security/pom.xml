@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>spring-web-security</artifactId>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
 	<dependencies>
 		<!-- spring-security 使用新版本的 Spring -->
@@ -75,5 +75,9 @@
 			<artifactId>mockito-core</artifactId>
 		</dependency>
 	</dependencies>
+
+	<modules>
+		<module>security-travel</module>
+	</modules>
 
 </project>
