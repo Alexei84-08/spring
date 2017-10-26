@@ -7,12 +7,12 @@
 	</Appenders>
 	<Loggers>
 		<!-- Application Loggers -->
-		<Logger name="cn.homjie.spring.mvc" level="info">
+		<Logger name="cn.homjie.spring.mvc" level="info" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
 
 		<!-- 3rdparty Loggers -->
-		<Logger name="org.springframework" level="info">
+		<Logger name="org.springframework" level="info" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
 
