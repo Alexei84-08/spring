@@ -79,6 +79,7 @@
 	<modules>
 		<module>security-travel</module>
 		<module>security-h2</module>
+		<module>security-custom</module>
 	</modules>
 
 </project>
