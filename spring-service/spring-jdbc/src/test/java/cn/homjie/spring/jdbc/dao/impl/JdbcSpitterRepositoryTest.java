@@ -1,11 +1,13 @@
 package cn.homjie.spring.jdbc.dao.impl;
 
 import cn.homjie.spring.jdbc.JdbcConfig;
+import cn.homjie.spring.jdbc.dao.SpitterRepository;
 import cn.homjie.spring.jdbc.domain.Spitter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,7 @@ public class JdbcSpitterRepositoryTest {
 
 	private static Spitter[] SPITTERS = new Spitter[6];
 	@Autowired
-	JdbcSpitterRepository spitterRepository;
+	private SpitterRepository spitterRepository;
 
 	private static void assertSpitter(int expectedSpitterIndex, Spitter actual) {
 		assertSpitter(expectedSpitterIndex, actual, "Newbie");
@@ -89,6 +91,7 @@ public class JdbcSpitterRepositoryTest {
 
 	@Test
 	@Transactional
+	// In TestContext framework, transaction default rollback, you can add annotation @Rollback(false)
 	public void save_newSpitter() {
 		assertEquals(4, spitterRepository.count());
 		Spitter spitter = new Spitter(null, "newbee", "letmein", "New Bee",

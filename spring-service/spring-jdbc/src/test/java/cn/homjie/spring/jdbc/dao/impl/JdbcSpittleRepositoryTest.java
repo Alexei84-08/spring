@@ -1,6 +1,7 @@
 package cn.homjie.spring.jdbc.dao.impl;
 
 import cn.homjie.spring.jdbc.JdbcConfig;
+import cn.homjie.spring.jdbc.dao.SpittleRepository;
 import cn.homjie.spring.jdbc.domain.Spitter;
 import cn.homjie.spring.jdbc.domain.Spittle;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
 public class JdbcSpittleRepositoryTest {
 
 	@Autowired
-	JdbcSpittleRepository spittleRepository;
+	private SpittleRepository spittleRepository;
 
 	@Test
 	public void count() {
