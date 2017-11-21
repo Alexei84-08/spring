@@ -7,7 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,7 +90,7 @@ public class JdbcSpitterRepositoryTest {
 
 	@Test
 	@Transactional
-	// In TestContext framework, transaction default rollback, you can add annotation @Rollback(false)
+	// In TestContext framework, transaction default rollback, you can add annotation @Rollback(false) or @Commit
 	public void save_newSpitter() {
 		assertEquals(4, spitterRepository.count());
 		Spitter spitter = new Spitter(null, "newbee", "letmein", "New Bee",
