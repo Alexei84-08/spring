@@ -15,6 +15,9 @@
 		<Logger name="org.springframework" level="info" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
+		<Logger name="org.springframework.jdbc" level="debug" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
 
 		<!-- Root Logger -->
 		<Root level="WARN">
