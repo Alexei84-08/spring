@@ -54,6 +54,8 @@ public class RepositoryTestConfig implements TransactionManagementConfigurer {
 	private Properties getHibernateProperties() {
 		Properties props = new Properties();
 		props.setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.H2Dialect");
+		props.setProperty(AvailableSettings.SHOW_SQL, "true");
+		props.setProperty(AvailableSettings.FORMAT_SQL, "true");
 		return props;
 	}
 }

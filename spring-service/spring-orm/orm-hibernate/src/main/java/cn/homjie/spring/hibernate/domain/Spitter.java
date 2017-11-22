@@ -19,7 +19,12 @@ public class Spitter {
 	@Column(name = "updateByEmail")
 	private boolean updateByEmail;
 
-	private Spitter() {
+	public Spitter() {
+		// hibernate newInstance default construct
+	}
+
+	public Spitter(long id) {
+		this.id = id;
 	}
 
 	public Spitter(Long id, String username, String password, String fullName,

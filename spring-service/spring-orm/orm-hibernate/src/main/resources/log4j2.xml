@@ -18,6 +18,12 @@
 		<Logger name="org.springframework.orm" level="debug" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
+		<Logger name="org.hibernate" level="info" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+		<Logger name="org.hibernate.type" level="trace" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
 
 		<!-- Root Logger -->
 		<Root level="WARN">

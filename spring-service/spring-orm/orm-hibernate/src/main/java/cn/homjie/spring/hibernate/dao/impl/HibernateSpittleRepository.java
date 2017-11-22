@@ -1,6 +1,7 @@
 package cn.homjie.spring.hibernate.dao.impl;
 
 import cn.homjie.spring.hibernate.dao.SpittleRepository;
+import cn.homjie.spring.hibernate.domain.Spitter;
 import cn.homjie.spring.hibernate.domain.Spittle;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +23,7 @@ public class HibernateSpittleRepository implements SpittleRepository {
 	}
 
 	private Session currentSession() {
-		return sessionFactory.getCurrentSession();//<co id="co_RetrieveCurrentSession"/>
+		return sessionFactory.getCurrentSession();
 	}
 
 	public long count() {
@@ -34,13 +35,14 @@ public class HibernateSpittleRepository implements SpittleRepository {
 	}
 
 	public List<Spittle> findRecent(int count) {
-		Query query = currentSession().createQuery("from Spittle order by postedTime desc");
+		String hql = "from Spittle order by postedTime desc";
+		Query<Spittle> query = currentSession().createQuery(hql, Spittle.class);
 		query.setMaxResults(count);
 		return query.list();
 	}
 
 	public Spittle findOne(long id) {
-		return (Spittle) currentSession().get(Spittle.class, id);
+		return currentSession().get(Spittle.class, id);
 	}
 
 	public Spittle save(Spittle spittle) {
@@ -53,8 +55,9 @@ public class HibernateSpittleRepository implements SpittleRepository {
 	}
 
 	public List<Spittle> findBySpitterId(long spitterId) {
-		Query query = currentSession().createQuery("from Spittle where spitter = :spitterId");
-		query.setParameter("spitterId", spitterId);
+		String hql = "from Spittle where spitter = :spitter order by postedTime desc";
+		Query<Spittle> query = currentSession().createQuery(hql, Spittle.class);
+		query.setParameter("spitter", new Spitter(spitterId));
 		return query.list();
 	}
 
@@ -63,7 +66,8 @@ public class HibernateSpittleRepository implements SpittleRepository {
 	}
 
 	public List<Spittle> findAll() {
-		return currentSession().createQuery("from Spittle order by postedTime desc").list();
+		String hql = "from Spittle order by postedTime desc";
+		return currentSession().createQuery(hql, Spittle.class).list();
 	}
 
 }

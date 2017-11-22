@@ -9,7 +9,7 @@ public class Spittle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "spitter")
 	private Spitter spitter;
 	@Column
@@ -17,7 +17,7 @@ public class Spittle {
 	@Column
 	private Date postedTime;
 
-	private Spittle() {
+	public Spittle() {
 	}
 
 	public Spittle(Long id, Spitter spitter, String message, Date postedTime) {
