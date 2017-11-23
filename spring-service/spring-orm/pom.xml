@@ -45,6 +45,7 @@
 
 	<modules>
 		<module>orm-hibernate</module>
+		<module>orm-jpa</module>
 	</modules>
 
 </project>
