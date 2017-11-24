@@ -1,0 +1,318 @@
+按照传统的做法，每个对象负责管理与自己相互协作的对象，（即它所依赖的对象）的引用。
+这将会导致高度耦合和难以测试的代码。
+
+通过DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定。
+对象无需自行创建或管理它们的依赖关系
+
+DI 可以带来松耦合：（策略设计模式）
+如果一个对象只通过接口（而不是具体实现或初始化过程）来表明依赖关系，
+那么这种依赖就能够在对象本身毫不知情的情况下，用不同的具体实现进行替换。
+
+创建应用组件之间协作的行为通常称为装配（wiring）
+
+Spring通过应用上下文（Application Context）装载bean的定义并把它们组装起来。
+Spring应用上下文全权负责对象的创建和组装。
+Spring自带了多种应用上下文的实现，它们之间主要的区别仅仅在于如何加载配置。
+
+面向切面编程（aspect-oriented programming，AOP）允许你把遍布应用各处的功能分离出来形成可重用的组件。
+
+系统由许多不同的组件组成，每一个组件各负责一块特定功能。
+除了实现自身核心的功能之外，这些组件还经常承担着额外的职责。
+诸如日志、事务管理和安全这样的系统服务经常融入到自身具有核心业务逻辑的组件中去，
+这些系统服务通常被称为横切关注点，因为它们会跨越系统的多个组件。
+
+如果将这些关注点分散到多个组件中去，你的代码将会带来双重的复杂性。
+	1、方法的调用还是会重复出现在各个模块中
+	2、组件会因为那些与自身核心业务无关的代码而变得混乱
+	
+AOP能够使这些服务模块化，并以声明的方式将它们应用到它们需要影响的组件中去。
+所造成的结果就是这些组件会具有更高的内聚性并且会更加关注自身的业务，完全不需要了解涉及系统服务所带来复杂性
+
+逻辑称为切面（Aspect），规则称为切点（Pointcut），在调用前还是调用后执行称为通知（Before advice, After advice）。
+最后可以选择在编译期将这些逻辑写入类文件，或是在运行时动态加载这些逻辑，这是两种不同的织入方式（Compile-time weaving, Load-time weaving）。
+
+使用new关键字或由JPA创建的对象是不受 Spring 托管的，也就无法进行依赖注入。解决办法就是使用 AOP 在对象创建后调用 Spring 框架来注入依赖。
+1、对于容器外创建的对象使用 @Configurable 来修饰类，告知 Spring 对这些类的实例也进行依赖注入；
+2、配置中需要加入 @EnableSpringConfigured
+3、启用 @EnableLoadTimeWeaving 配置运行时织入
+
+Spring容器负责创建对象，装配它们，配置它们并管理它们的整个生命周期，从生存到死亡
+
+ClassPathXmlApplicationContext 是在所有的类路径（包含JAR文件）下查找
+AnnotationConfigApplicationContext 从Java配置中加载应用上下文
+
+bean 的生命周期
+
+1、Spring 对 bean 进行实例化；
+2、Spring 将值和 bean 的引用注入到 bean 对应的属性中；
+
+3、如果 bean 实现了 BeanNameAware 接口，Spring 将 bean 的 ID 传递给 setBean-Name()方法；
+4、如果 bean 实现了 BeanFactoryAware 接口，Spring 将调用 setBeanFactory()方法，将 BeanFactory 容器实例传入；
+5、如果 bean 实现了 ApplicationContextAware 接口，Spring 将调用 setApplicationContext()方法，将bean所在的应用上下文的引用传入进来；
+
+6、如果 bean 实现了 BeanPostProcessor 接口，Spring 将调用它们的 postProcessBeforeInitialization()预初始化方法；
+7、如果 bean 实现了 InitializingBean 接口，Spring 将调用它们的 afterPropertiesSet()方法；
+8、如果 bean 使用 init-method 声明了初始化方法，该方法也会被调用；
+
+9、如果 bean 实现了 BeanPostProcessor 接口，Spring 将调用它们的 postProcessAfterInitialization()初始化后方法；
+10、如果 bean 实现了 DisposableBean 接口，Spring 将调用它的 destroy()接口方法；
+11、如果 bean 使用 destroy-method 声明了销毁方法，该方法也会被调用。
+
+@PostConstruct 与 @PreDestroy 在 CommonAnnotationBeanPostProcessor 被注册。
+@PostConstruct 等价于实现了 BeanPostProcessor 接口；
+@PreDestroy 等价于实现了 DisposableBean 接口；
+
+装配 Bean
+创建应用对象之间协作关系的行为通常称为装配（wiring），这也是依赖注入（DI）的本质。
+
+提供了三种主要的装配机制：
+1、在 XML 中进行显式配置。
+2、在 Java 中进行显式配置。
+3、隐式的 bean 发现机制和自动装配。
+
+自动化装配：
+1、组件扫描（component scanning）：Spring 会自动发现应用上下文中所创建的 bean。
+2、自动装配（autowiring）：Spring 自动满足 bean 之间的依赖。
+
+组件扫描默认是不启用的，我们还需要显式配置一下 Spring。
+@ComponentScan 注解，这个注解能够在Spring中启用组件扫描，默认扫描与配置类相同的包以及这个包下的所有子包。
+
+为组件扫描的 bean 命名：
+1、Spring 应用上下文中所有的 bean 都会给定一个 ID，就是将类名的第一个字母变为小写。
+2、可以在 @Component 中使用自定义 bean 名称
+3、Spring 支持将 @Named 作为 @Component 注解的替代方，不推荐
+
+@ComponentScan 可以配置多个要扫描的基础包，也可以通过 basePackageClasses 指定类所在的包将会作为组件扫描的基础包。
+
+@Import 注解导入其他配置类
+@ImportResource 注解导入配置文件，例如 @ImportResource("classpath:config.xml")
+
+Spring 在确定哪个 profile 处于激活状态时，需要依赖两个独立的属性：spring.profiles.active 和 spring.profiles.default。
+如果设置了 spring.profiles.active 属性的话，那么它的值就会用来确定哪个profile是激活的。
+但如果没有设置spring.profiles.active属性的话，那Spring将会查找spring.profiles.default的值。
+如果 spring.profiles.active 和 spring.profiles.default 均没有设置的话，那就没有激活的 profile，因此只会创建那些没有定义在 profile 中的 bean。
+
+可以同时激活多个 profile，这可以通过列出多个 profile 名称，并以逗号分隔来实现。
+
+@Conditional 注解，它可以用到带有 @Bean 注解的方法上。
+如果给定的条件计算结果为 true，就会创建这个 bean，否则的话，这个 bean 会被忽略。
+
+处理自动装配的歧义性：
+1、使用 @Primary 注解将可选bean中的某一个设为首选（primary）的 bean
+2、使用 @Qualifier 注解限定符（qualifier）来帮助 Spring 将可选的 bean 的范围缩小到只有一个 bean
+
+bean 的作用域：
+默认情况下，Spring 应用上下文中所有 bean 都是作为以单例（singleton）的形式创建的。
+
+Spring定义了多种作用域，可以基于这些作用域创建 bean，包括：
+	单例（Singleton）：在整个应用中，只创建 bean 的一个实例。
+	原型（Prototype）：每次注入或者通过 Spring 应用上下文获取的时候，都会创建一个新的 bean 实例。
+	会话（Session）：在 Web 应用中，为每个会话创建一个 bean 实例。
+	请求（Rquest）：在 Web 应用中，为每个请求创建一个 bean 实例。
+
+如果选择其他的作用域，要使用 @Scope 注解，它可以与 @Component 或 @Bean 一起使用。
+
+注入外部的值：
+在 Spring 中，处理外部值的最简单方式就是声明属性源并通过 Spring 的 Environment 来检索属性。
+
+Spring切面可以应用5种类型的通知：
+	前置通知（Before）：在目标方法被调用之前调用通知功能；
+	后置通知（After）：在目标方法完成之后调用通知，此时不会关心方法的输出是什么；
+	返回通知（After-returning）：在目标方法成功执行之后调用通知；
+	异常通知（After-throwing）：在目标方法抛出异常后调用通知；
+	环绕通知（Around）：通知包裹了被通知的方法，在被通知的方法调用之前和调用之后执行自定义的行为。
+
+通知和切点共同定义了切面的全部内容：它是什么，在何时和何处完成其功能。
+
+Spring提供了4种类型的AOP支持：
+	基于代理的经典 Spring AOP；（笨重和过于复杂）
+	纯 POJO 切面；（需要 XML 配置）
+	@AspectJ 注解驱动的切面；（注解驱动，只支持方法级别的连接点）
+	注入式 AspectJ 切面（适用于 Spring 各版本）。（如果 AOP 需求超过了简单的方法调用，如构造器或属性拦截，需要考虑使用 AspectJ 来实现切面）
+
+通过在代理类中包裹切面，Spring 在运行期把切面织入到 Spring 管理的 bean 中。
+
+@EnableAspectJAutoProxy 启用 AspectJ 自动代理，为 @Aspect 注解的 bean 创建一个代理，这个代理会围绕着所有该切面的切点所匹配的 bean。
+
+ProceedingJoinPoint 作为参数。这个对象是必须要有的，因为你要在通知中通过它来调用被通知的方法。
+通知方法中可以做任何的事情，当要将控制权交给被通知的方法时，它需要调用 ProceedingJoinPoint 的 proceed()方法。
+
+切点表达式中的 args(param) 限定符。它表明传递给方法的参数也会传递到通知中去。
+args 中参数的名称 param 也与切点方法签名中的参数相匹配。
+
+切点定义中的参数与通知方法中的参数名称是一样的，这样就完成了从命名切点到通知方法的参数转移。
+
+通过切面引入新功能：
+当引入接口的方法被调用时，代理会把此调用委托给实现了新接口的某个其他对象。实际上，一个 bean 的实现被拆分到了多个类中。
+
+@DeclareParents注解由三部分组成：
+	1、value 属性指定了哪种类型的 bean 要引入该接口。（标记符后面的加号表示是所有子类型，而不是本身）
+	2、defaultImpl 属性指定了为引入功能提供实现的类。
+	3、@DeclareParents 注解所标注的属性指明了要引入了接口。
+
+Spring MVC 基于模型-视图-控制器（Model-View-Controller，MVC）模式实现
+
+跟踪 Spring MVC 的请求：
+1、Spring MVC所有的请求都会通过一个单实例的 Servlet 将请求委托给应用程序的其他组件来执行实际的处理。（DispatcherServlet）
+2、DispatcherServlet 的任务是将请求发送给 Spring MVC 的控制器，控制器是一个用于处理请求的 Spring  组件。在典型的应用程序中可能会有多个控制器，DispatcherServlet 需要知道应该将请求发送给哪个控制器。所以 DispatcherServlet 会查
+询一个或多个处理器映射（handler mapping）来确定请求的下一站在哪里。处理器映射会根据请求所携带的URL信息来进行决策。
+3、一旦选择了合适的控制器，DispatcherServlet 会将请求发送给选中的控制器。到了控制器，请求会卸下其负载（用户提交的信息）并耐心等待控制器处理这些信息。
+4、控制器在完成逻辑处理后，通常会产生一些信息，这些信息需要返回给用户并在浏览器上显示。这些信息被称为模型（model）。
+5、仅仅给用户返回原始的信息是不够的——这些信息需要以用户友好的方式进行格式化，一般会是 HTML。
+控制器所做的最后一件事就是将模型数据打包，并且标示出用于渲染输出的视图名。它接下来会将请求连同模型和视图名发送回 DispatcherServlet。
+6、控制器就不会与特定的视图相耦合，传递给 DispatcherServlet 的视图名并不直接表示视图，仅仅传递了一个逻辑名称，这个名字将会用来查找产生结果的真正视图。
+DispatcherServlet 将会使用视图解析器（view resolver）来将逻辑视图名匹配为一个特定的视图实现，它可能是也可能不是 JSP。
+7、既然 DispatcherServlet 已经知道由哪个视图渲染结果，那请求的任务基本上也就完成了。
+它的最后一站是视图的实现（可能是 JSP），在这里它交付模型数据。请求的任务就完成了。
+视图将使用模型数据渲染输出，这个输出会通过响应对象传递给客户端（不会像听上去那样硬编码）。
+
+DispatcherServlet 是 Spring MVC 的核心。
+按照传统的方式，像 DispatcherServlet 这样的 Servlet 会配置在 web.xml 文件中，这个文件会放到应用的 WAR 包里面。
+当然，这是配置 DispatcherServlet 的方法之一。但是，借助于 Servlet 3 规范和 Spring 3.1 的功能增强，这种方式已经不是唯一的方案了，
+我们会使用 Java 将 DispatcherServlet 配置在 Servlet 容器中，而不会再使用 web.xml 文件。
+
+DispatcherServlet 与 ContextLoaderListener 的关系：
+1、当 DispatcherServlet 启动的时候，它会创建 Spring 应用上下文，并加载配置文件或配置类 getServletConfigClasses() 中所声明的bean。
+2、但是在 Spring Web 应用中，通常还会有另外一个应用上下文。另外的这个应用上下文是由 ContextLoaderListener 创建的。
+3、我们希望 DispatcherServlet 加载包含 Web 组件的 bean，如控制器、视图解析器以及处理器映射；
+而 ContextLoaderListener 要加载应用中的其他 bean，这些 bean 通常是驱动应用后端的中间层和数据层组件。
+
+@EnableWebMvc 启用注解驱动，等价于 XML 中的 <mvc:annotation-driven>
+
+1、没有配置视图解析器。如果这样的话，Spring 默认会使用 BeanNameView-Resolver，
+这个视图解析器会查找 ID 与视图名称匹配的bean，并且查找的 bean 要实现 View 接口，它以这样的方式来解析视图
+2、没有启用组件扫描。这样的结果就是，Spring 只能找到显式声明在配置类中的控制器
+3、DispatcherServlet 会映射为应用的默认 Servlet，所以它会处理所有的请求，包括对静态资源的请求，如图片和样式表
+
+web.xml配置中的url-pattern的'/'和'/*'的区别吗？
+'/'表示该项目的所有请求路径；'/*'表示只能有一级子路径，它匹配'/a.jsp'但是不匹配'/jsp/a.jsp'。
+
+处理器方法上的 @RequestMapping 注解会对类级别上的 @RequestMapping 的声明进行补充
+
+将控制器中请求处理的逻辑和视图中的渲染实现解耦是 Spring MVC 的一个重要特性。
+
+redirect: 前缀将解析为重定向的规则，而不是视图的名称
+forward: 前缀将会前往（forward）指定的 URL 路径，而不再是重定向
+
+使用 Spring 对 Java 校验 API（Java Validation API，又称 JSR-303）的支持。从 Spring 3.0 开始，在 Spring MVC 中提供了对 Java 校验 API 的支持。
+在 Spring MVC 中要使用 Java 校验 API 的话，并不需要什么额外的配置。只要保证在类路径下包含这个 Java API 的实现即可，比如 Hibernate Validator。
+
+@Valid 注解，这会告知 Spring，需要确保这个对象满足校验限制，Errors 参数要紧跟在带有 @Valid 注解的参数后面。
+
+如何编写控制器来处理文件上传（multipart）
+1、配置一个 multipart 解析器（MultipartResolver），通过它来告诉 DispatcherServlet 该如何读取 multipart 请求。
+	CommonsMultipartResolver：使用 Jakarta Commons FileUpload 解析 multipart 请求；
+	StandardServletMultipartResolver（推荐）：依赖于 Servlet 3.0 对 multipart 请求的支持（始于 Spring 3.1）。
+2、在 Servlet 中对 multipart 参数配置
+	如果我们想要限制用户上传文件的大小，指定文件上传目录之类的参数，需要在 Servlet 中指定 multipart 的配置，否则就无法正常工作。
+	可以将 multipart 的具体细节作为 DispatcherServlet 配置的一部分，重载 AbstractAnnotationConfigDispatcherServletInitializer 中
+	customizeRegistration 方法，指定 registration.setMultipartConfig(MultipartConfigElement) 的参数。
+3、处理 multipart 请求
+	@RequestPart byte[] file：使用上传文件的原始 byte 比较简单但是功能有限；
+	@RequestPart MultipartFile file：Spring 提供了 MultipartFile 接口，使用 transferTo 方法便利写入；
+	@RequestPart Part file：Servlet 3.0 提供的接口，使用 write 方法写入，与 MultipartFile 并没有太大的差别。
+MultipartConfigElement
+	1、上传文件的最大容量（以字节为单位）。默认是没有限制的。
+	2、整个 multipart 请求的最大容量（以字节为单位），不会关心有多少个 part 以及每个 part 的大小。默认是没有限制的。
+	3、在上传的过程中，如果文件大小达到了一个指定最大容量（以字节为单位），将会写入到临时文件路径中。默认值为 0，也就是所有上传的文件都会写入到磁盘上。
+
+添加其他的 Servlet、Listener 和 Filter ：
+基于Java的初始化器（initializer）的一个好处就在于我们可以定义任意数量的初始化器类。
+因此，如果我们想往 Web 容器中注册其他组件的话，只需创建一个新的初始化器就可以了。
+最简单的方式就是实现 Spring 的 WebApplicationInitializer 接口。
+1、注册了一个 Servlet 并将其映射到一个路径上
+Dynamic myServlet = ServletContext.addServlet(String servletName, String className);
+myServlet.addMapping(String... urlPatterns);
+2、注册了一个 Filter
+Dynamic myFilter = ServletContext.addFilter(String filterName, String className);
+myFilter.addMappingForUrlPatterns(EnumSet<DispatcherType> dispatcherTypes, boolean isMatchAfter, String... urlPatterns);
+3、注册了一个 Filter 并映射到 DispatcherServlet 上
+重载 AbstractAnnotationConfigDispatcherServletInitializer 的 getServletFilters 方法，而没有必要声明它的映射路径
+
+如何处理控制器所抛出的异常
+1、特定的 Spring 异常将会自动映射为指定的 HTTP 状态码；
+2、异常上可以添加 @ResponseStatus 注解，从而将其映射为某一个 HTTP 状态码；
+3、在方法上可以添加 @ExceptionHandler 注解，使其用来处理异常。
+	控制器中的 @ExceptionHandler 注解所标注的方法能够处理同一个控制器类中所有处理器方法的异常
+	@ControllerAdvice 注解的类，控制器通知能够处理所有控制器中处理器方法所抛出的异常
+控制器通知会包含一个或多个如下类型的方法：将控制器的通用行为抽取到同一个地方。
+	@ExceptionHandler 注解标注的方法；
+	@InitBinder 注解标注的方法；
+	@ModelAttribute 注解标注的方法。
+
+如何跨重定向请求传递数据
+1、在处理完 POST 请求后，通常来讲一个最佳实践就是执行一下重定向。
+除了其他的一些因素外，这样做能够防止用户点击浏览器的刷新按钮或后退箭头时，客户端重新执行危险的 POST 请求。
+2、一般来讲，当一个处理器方法完成之后，该方法所指定的模型数据将会复制到请求中，并作为请求中的属性，请求会转发（forward）到视图上进行渲染。
+因为控制器方法和视图所处理的是同一个请求，所以在转发的过程中，请求属性能够得以保存。
+3、当控制器的结果是重定向的话，原始的请求就结束了，并且会发起一个新的GET请求。
+原始请求中所带有的模型数据也就随着请求一起消亡了。在新的请求属性中，没有任何的模型数据，这个请求必须要自己计算数据。
+4、对于重定向来说，模型并不能用来传递数据。但是我们也有一些其他方案，能够从发起重定向的方法传递数据给处理重定向方法中：
+	使用 URL 模板以路径变量和/或查询参数的形式传递数据；
+	通过 flash 属性发送数据。
+
+通过URL模板进行重定向：
+	model.addAttribute("username", "habuma");
+	model.addAttribute("spitterId", 42);
+	return "redirect:/spitter/{username}";
+username 作为占位符填充到了 URL 模板中，而不是直接连接到重定向 String 中，所以 username 中所有的不安全字符都会进行转义。
+除此之外，模型中所有其他的原始类型值都可以添加到URL中作为查询参数。重定向URL路径将会是“/spitter/habuma?spitterId=42”。
+
+通过路径变量和查询参数的形式跨重定向传递数据是很简单直接的方式，但它也有一定的限制。
+它只能用来发送简单的值，如 String 和数字的值。在 URL 中，并没有办法发送更为复杂的值，但这正是 flash 属性能够提供帮助的领域。
+
+使用 flash 属性进行重定向：
+将模型数据放到会话中，并且能够跨多个请求。flash 属性会一直携带这些数据直到下一次请求，然后才会消失。
+	RedirectAttributes model;
+	model.addAttribute("username", "habuma");
+	model.addFlashAttribute("spitter", spitter);
+	return "redirect:/spitter/{username}";
+在重定向的请求中可以通过 Model.containsAttribute("spitter") 进行判断是否通过重定向跳转。
+
+使用Spring Web Flow
+有时候，Web 应用程序需要控制网络冲浪者的方向，引导他们一步步地访问应用。
+比较典型的例子就是电子商务站点的结账流程，从购物车开始，应用程序会引导你依次经过派送详情、账单信息以及最终的订单确认流程。
+
+Spring Web Flow 是一个 Web 框架，它适用于元素按规定流程运行的程序。
+它是 Spring MVC 的扩展，支持开发基于流程的应用程序，将流程的定义与实现流程行为的类和视图分离开来。
+
+Spring Web Flow 是构建于 Spring MVC 基础之上的。这意味着所有的流程请求都需要首先经过 Spring MVC 的 DispatcherServlet。
+
+@EnableTransactionManagement 注解启用声明式事务，Hibernate5 中直接支持了 JPA。
+
+在 Spring 中使用 JPA 的第一步是要在 Spring 应用上下文中将实体管理器工厂（entity manager factory）按照 bean 的形式来进行配置。
+基于 JPA 的应用程序需要使用 EntityManagerFactory 的实现类来获取 EntityManager 实例。JPA 定义了两种类型的实体管理器：
+
+1、应用程序管理类型：当应用程序向实体管理器工厂直接请求实体管理器时，工厂会创建一个实体管理器。
+在这种模式下，程序要负责打开或关闭实体管理器并在事务中对其进行控制。这种方式的实体管理器适合于不运行在 Java EE 容器中的独立应用程序。
+
+2、容器管理类型：实体管理器由Java EE创建和管理。应用程序根本不与实体管理器工厂打交道。
+相反，实体管理器直接通过注入或JNDI来获取。容器负责配置实体管理器工厂。
+这种类型的实体管理器最适用于Java EE容器，在这种情况下会希望在 persistence.xml 指定的JPA 配置之外保持一些自己对 JPA 的控制。
+
+以上的两种实体管理器实现了同一个 EntityManager 接口。关键的区别不在于 EntityManager 本身，而是在于 EntityManager 的创建和管理方式。
+
+不管你希望使用哪种 EntityManagerFactory，Spring 都会负责管理 EntityManager。
+如果你使用的是应用程序管理类型的实体管理器，Spring承担了应用程序的角色并以透明的方式处理EntityManager。
+在容器管理的场景下，Spring会担当容器的角色。
+
+这两种实体管理器工厂分别由对应的 Spring 工厂 Bean 创建：
+LocalEntityManagerFactoryBean 生成应用程序管理类型的 EntityManager-Factory；
+LocalContainerEntityManagerFactoryBean 生成容器管理类型的 Entity-ManagerFactory。
+
+选择应用程序管理类型的还是容器管理类型的 EntityManager Factory，对于基于 Spring 的应用程序来讲是完全透明的。
+当组合使用 Spring 和 JPA 时，处理 EntityManagerFactory 的复杂细节被隐藏了起来，数据访问代码只需关注它们的真正目标即可，也就是数据访问。
+
+1、配置应用程序管理类型的 JPA
+	配置信息来源于一个名为 persistence.xml 的配置文件，这个文件必须位于类路径下的META-INF目录下。
+	persistence.xml 的作用在于定义一个或多个持久化单元，持久化单元是同一个数据源下的一个或多个持久化类。
+	因为在 persistence.xml 文件中包含了大量的配置信息，所以在 Spring 中需要配置的就很少了，
+	定义 persistenceUnitName 属性的值就是persistence.xml中持久化单元的名称。
+2、使用容器管理类型的 JPA（推荐）
+	DataSource 数据源、JpaVendorAdapter JPA厂商实现和 packagesToScan属性（识别持久化单元中的实体类）
+	persistence.xml 文件完全没有必要存在
+3、从 JNDI 获取实体管理器工厂
+	JndiObjectFactoryBean 配置 JndiName 属性	
+
+@PersistenceUnit 注解将注入 EntityManagerFactory
+@PersistenceContext 注解将注入 EntityManager（推荐）
