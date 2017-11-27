@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<maven-war-plugin.version>3.1.0</maven-war-plugin.version>
-		<spring.version>4.3.11.RELEASE</spring.version>
+		<spring.version>4.3.12.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
 		<javax.inject.version>1</javax.inject.version>
 		<javax.servlet.api.version>4.0.0</javax.servlet.api.version>
@@ -35,6 +35,7 @@
 		<spring-webflow.version>2.4.6.RELEASE</spring-webflow.version>
 		<spring-security-web.version>4.2.3.RELEASE</spring-security-web.version>
 		<hibernate.version>5.2.12.Final</hibernate.version>
+		<spring-data-jpa.version>1.11.8.RELEASE</spring-data-jpa.version>
 	</properties>
 
 	<dependencyManagement>
@@ -84,6 +85,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
+			</dependency>
+			<!-- spring data jpa -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>${spring-data-jpa.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.h2database</groupId>
