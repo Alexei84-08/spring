@@ -37,6 +37,7 @@
 
 	<modules>
 		<module>data-mongo</module>
+		<module>data-neo4j</module>
 	</modules>
 
 </project>
