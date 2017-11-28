@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<maven-war-plugin.version>3.1.0</maven-war-plugin.version>
-		<spring.version>4.3.12.RELEASE</spring.version>
+		<spring.version>4.3.13.RELEASE</spring.version>
 		<aspectj.version>1.8.9</aspectj.version>
 		<javax.inject.version>1</javax.inject.version>
 		<javax.servlet.api.version>4.0.0</javax.servlet.api.version>
@@ -26,6 +26,8 @@
 		<commons-lang3.version>3.6</commons-lang3.version>
 		<commons-fileupload.version>1.3.3</commons-fileupload.version>
 		<commons-text.version>1.1</commons-text.version>
+		<commons-codec.version>1.11</commons-codec.version>
+		<validation-api.version>2.0.0.Final</validation-api.version>
 		<hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
 		<log4j2.version>2.9.1</log4j2.version>
 		<h2.version>1.4.196</h2.version>
@@ -35,8 +37,10 @@
 		<spring-webflow.version>2.4.6.RELEASE</spring-webflow.version>
 		<spring-security-web.version>4.2.3.RELEASE</spring-security-web.version>
 		<hibernate.version>5.2.12.Final</hibernate.version>
-		<spring-data-jpa.version>1.11.8.RELEASE</spring-data-jpa.version>
-		<spring-data-mongodb.version>1.10.8.RELEASE</spring-data-mongodb.version>
+		<spring-data-jpa.version>1.11.9.RELEASE</spring-data-jpa.version>
+		<spring-data-mongodb.version>1.10.9.RELEASE</spring-data-mongodb.version>
+		<spring-data-neo4j.version>4.2.9.RELEASE</spring-data-neo4j.version>
+		<neo4j-ogm-bolt-driver.version>2.1.5</neo4j-ogm-bolt-driver.version>
 	</properties>
 
 	<dependencyManagement>
@@ -99,6 +103,39 @@
 				<artifactId>spring-data-mongodb</artifactId>
 				<version>${spring-data-mongodb.version}</version>
 			</dependency>
+			<!-- spring data neo4j -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-neo4j</artifactId>
+				<version>${spring-data-neo4j.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-codec</groupId>
+						<artifactId>commons-codec</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.neo4j</groupId>
+				<artifactId>neo4j-ogm-bolt-driver</artifactId>
+				<version>${neo4j-ogm-bolt-driver.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- fix neo4j dependency conflict -->
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons-codec.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
@@ -112,6 +149,18 @@
 					<exclusion>
 						<groupId>commons-logging</groupId>
 						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-beans</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-expression</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -206,6 +255,11 @@
 				<version>${log4j2.version}</version>
 			</dependency>
 			<!-- validation -->
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.hibernate.validator</groupId>
 				<artifactId>hibernate-validator</artifactId>
