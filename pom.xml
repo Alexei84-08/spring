@@ -42,6 +42,8 @@
 		<spring-data-neo4j.version>4.2.9.RELEASE</spring-data-neo4j.version>
 		<neo4j-ogm-bolt-driver.version>2.1.5</neo4j-ogm-bolt-driver.version>
 		<jackson-databind.version>2.9.2</jackson-databind.version>
+		<spring-data-redis.version>1.8.9.RELEASE</spring-data-redis.version>
+		<jedis.version>2.9.0</jedis.version>
 	</properties>
 
 	<dependencyManagement>
@@ -149,6 +151,17 @@
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson-databind.version}</version>
+			</dependency>
+			<!-- spring data redis -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-redis</artifactId>
+				<version>${spring-data-redis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>${jedis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.h2database</groupId>
