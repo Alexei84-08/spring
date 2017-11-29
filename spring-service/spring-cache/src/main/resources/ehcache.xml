@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+	<!-- CacheManager 级别 -->
+	<!-- maxBytesLocalHeap：限制缓存所能使用的堆内存的最大字节数 -->
+	<!-- maxBytesLocalOffHeap：限制缓存所能使用的非堆内存的最大字节数 -->
+	<!-- maxBytesLocalDisk：限制缓存所能使用的磁盘的最大字节数 -->
+
+	<!-- Cache 级别 -->
+	<!-- name：缓存名称 -->
+	<!-- eternal：缓存中对象是否为永久的，从不过期 -->
+	<!-- maxEntriesLocalHeap：限制当前缓存在堆内存上所能保存的最大元素数量 -->
+	<!-- timeToIdleSeconds：对象在失效前的允许闲置时间，仅当 eternal=false 时使用，默认值是 0，可闲置时间无穷大 -->
+	<!-- timeToLiveSeconds：缓存数据的生存时间（TTL），仅当 eternal=false 时使用，如果该值是 0 就意味着元素可以生存无穷长时间 -->
+	<!-- overflowToDisk：内存不足时，是否启用磁盘缓存 -->
+	<!-- diskSpoolBufferSizeMB： 设置磁盘缓冲区大小，默认值为30M。每一个磁盘缓冲区针对与各自的 Cache -->
+	<!-- maxEntriesLocalDisk：限制在磁盘上所能保存的元素的最大数量 -->
+	<!-- diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是 120 秒 -->
+	<!-- diskPersistent：是否在 VM 重启时存储硬盘的缓存数据。默认值是 false -->
+	<!-- memoryStoreEvictionPolicy：达到限制时，Ehcache 将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用），FIFO（先进先出）或是LFU（最不常使用） -->
+
+	<!-- 磁盘缓存位置 -->
+	<diskStore path="java.io.tmpdir/ehcache"/>
+
+	<!-- 默认缓存 -->
+	<defaultCache
+			eternal="false"
+			maxEntriesLocalHeap="10000"
+			timeToIdleSeconds="120"
+			timeToLiveSeconds="120"
+			maxEntriesLocalDisk="10000"
+			diskExpiryThreadIntervalSeconds="120"
+			memoryStoreEvictionPolicy="LRU">
+		<!-- localRestartable：将所有缓存对象拷贝到磁盘，重新启动后数据可以重新装载（只适用于企业版本） -->
+		<!-- localTempSwap：将所有缓存对象拷贝到磁盘，重新启动后数据将丢失 -->
+		<!-- none：不做持久化保存，默认模式 -->
+		<persistence strategy="localTempSwap"/>
+	</defaultCache>
+
+	<cache name="spittleCache"
+		   eternal="false"
+		   maxEntriesLocalHeap="100"
+		   timeToIdleSeconds="30"
+		   timeToLiveSeconds="60"
+		   maxEntriesLocalDisk="100"
+		   overflowToDisk="false"
+		   memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

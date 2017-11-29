@@ -44,6 +44,7 @@
 		<jackson-databind.version>2.9.2</jackson-databind.version>
 		<spring-data-redis.version>1.8.9.RELEASE</spring-data-redis.version>
 		<jedis.version>2.9.0</jedis.version>
+		<ehcache.version>2.10.4</ehcache.version>
 	</properties>
 
 	<dependencyManagement>
@@ -162,6 +163,23 @@
 				<groupId>redis.clients</groupId>
 				<artifactId>jedis</artifactId>
 				<version>${jedis.version}</version>
+			</dependency>
+			<!-- spring cache support -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>${ehcache.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.h2database</groupId>

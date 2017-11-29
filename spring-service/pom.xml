@@ -16,6 +16,7 @@
 		<module>spring-jdbc</module>
 		<module>spring-orm</module>
 		<module>spring-nosql</module>
+		<module>spring-cache</module>
 	</modules>
 
 </project>
