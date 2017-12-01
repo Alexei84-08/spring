@@ -36,6 +36,7 @@
 		<thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
 		<spring-webflow.version>2.4.6.RELEASE</spring-webflow.version>
 		<spring-security-web.version>4.2.3.RELEASE</spring-security-web.version>
+		<jsr250-api.version>1.0</jsr250-api.version>
 		<hibernate.version>5.2.12.Final</hibernate.version>
 		<spring-data-jpa.version>1.11.9.RELEASE</spring-data-jpa.version>
 		<spring-data-mongodb.version>1.10.9.RELEASE</spring-data-mongodb.version>
@@ -267,7 +268,16 @@
 						<artifactId>spring-aop</artifactId>
 						<groupId>org.springframework</groupId>
 					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-expression</artifactId>
+					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>${jsr250-api.version}</version>
 			</dependency>
 			<!-- thymeleaf -->
 			<dependency>
