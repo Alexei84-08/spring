@@ -16,11 +16,13 @@ public interface SpittleRepository {
 
 	long count();
 
+	// 当为接口方法添加注解后，@Cacheable 注解会被所有实现继承，这些实现类都会应用相同的缓存规则
 	@Cacheable("spittleCache")
 	List<Spittle> findRecent();
 
 	List<Spittle> findRecent(int count);
 
+	// 当 findOne() 被调用时，缓存切面会拦截调用并在缓存中查找之前以名 spittleCache 存储的返回值。
 	@Cacheable(value = "spittleCache", unless = "#result.message.contains('NoCache')", condition = "#id >= 10")
 	Spittle findOne(long id);
 
