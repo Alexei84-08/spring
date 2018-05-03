@@ -16,8 +16,11 @@ public class PrototypeApplication {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PrototypeApplication.class);
 
         Singleton singleton = ctx.getBean(Singleton.class);
-        // 默认Prototype注入到Singleton的bean，是不变的
+        // 默认Prototype注入到同一Singleton的bean，是不变的
         System.out.println(singleton.getPrototype() == singleton.getPrototype()); // true
+        // 不同Singleton的Prototype bean是不同的
+        SingletonOther singletonOther = ctx.getBean(SingletonOther.class);
+        System.out.println(singleton.getPrototype() == singletonOther.getPrototype()); // false
         // 通过ObjectProvider获取bean保证每次都不同
         System.out.println(singleton.getPrototypeByProvider() == singleton.getPrototypeByProvider()); // false
     }
