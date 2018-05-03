@@ -20,6 +20,8 @@ public class PrototypeApplication {
         System.out.println(singleton.getPrototype() == singleton.getPrototype()); // true
         // 不同Singleton的Prototype bean是不同的
         SingletonOther singletonOther = ctx.getBean(SingletonOther.class);
+        SingletonBoth singletonBoth = ctx.getBean(SingletonBoth.class);
+        System.out.println(singletonBoth.getPrototype1() == singletonBoth.getPrototype2()); // false
         System.out.println(singleton.getPrototype() == singletonOther.getPrototype()); // false
         // 通过ObjectProvider获取bean保证每次都不同
         System.out.println(singleton.getPrototypeByProvider() == singleton.getPrototypeByProvider()); // false
