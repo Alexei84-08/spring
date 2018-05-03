@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class NoteApplication {
 
-	public static void main(String[] args) {
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(NoteApplication.class);
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(NoteApplication.class);
 
-		System.out.println(ctx.getBean(Note.class) == ctx.getBean(Note.class));
-		System.out.println(ctx.getBean(Note.class).order());
-	}
+        System.out.println(ctx.getBean(Note.class) == ctx.getBean(Note.class)); // false
+        System.out.println(ctx.getBean(Note.class).order()); // 3
+    }
 }
